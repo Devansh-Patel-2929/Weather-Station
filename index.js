@@ -7,8 +7,41 @@ let latestData = {
   humidity: null
 };
 
+// Middleware to parse JSON
 app.use(express.json());
+app.use(express.static('public'));
 
+// Serve the default page
+app.get('/', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Weather Monitoring</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          text-align: center;
+          margin-top: 50px;
+        }
+        button {
+          padding: 10px 20px;
+          font-size: 16px;
+          cursor: pointer;
+        }
+      </style>
+    </head>
+    <body>
+      <h1>Weather Monitoring System</h1>
+      <button onclick="window.location.href='/data'">Get Weather</button>
+    </body>
+    </html>
+  `);
+});
+
+// Route to handle POST requests to update data
 app.post('/update', (req, res) => {
   const { temperature, humidity } = req.body;
   if (temperature !== undefined && humidity !== undefined) {
@@ -20,10 +53,12 @@ app.post('/update', (req, res) => {
   }
 });
 
+// Route to get the latest weather data
 app.get('/data', (req, res) => {
   res.json(latestData);
 });
 
+// Start the server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
