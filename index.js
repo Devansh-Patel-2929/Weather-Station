@@ -8,13 +8,10 @@ let latestData = {
   humidity: null
 };
 
-// Middleware to parse JSON
 app.use(express.json());
 
-// Route to receive data from ESP8266
 app.post('/update', (req, res) => {
   const { temperature, humidity } = req.body;
-
   if (temperature !== undefined && humidity !== undefined) {
     latestData.temperature = temperature;
     latestData.humidity = humidity;
@@ -24,7 +21,6 @@ app.post('/update', (req, res) => {
   }
 });
 
-// Route to get the latest data
 app.get('/data', (req, res) => {
   res.json(latestData);
 });
