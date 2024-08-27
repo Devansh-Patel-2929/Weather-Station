@@ -1,29 +1,34 @@
+// index.js
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 let latestData = {
   temperature: null,
   humidity: null
 };
 
-app.get('/update', (req, res) => {
-  const temp = req.query.temp;
-  const humidity = req.query.humidity;
+// Middleware to parse JSON
+app.use(express.json());
 
-  if (temp && humidity) {
-    latestData.temperature = temp;
+// Route to receive data from ESP8266
+app.post('/update', (req, res) => {
+  const { temperature, humidity } = req.body;
+
+  if (temperature !== undefined && humidity !== undefined) {
+    latestData.temperature = temperature;
     latestData.humidity = humidity;
-    res.send('Data received');
+    res.status(200).send('Data received');
   } else {
     res.status(400).send('Invalid data');
   }
 });
 
+// Route to get the latest data
 app.get('/data', (req, res) => {
   res.json(latestData);
 });
 
 app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });
