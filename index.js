@@ -47,18 +47,10 @@ app.post('/update', (req, res) => {
     
     const { temperature, humidity } = req.body;
     console.log(req.body);
-    if (temperature !== undefined && humidity !== undefined) {
-      if (typeof temperature === 'number' && typeof humidity === 'number') {
         latestData.temperature = temperature;
         latestData.humidity = humidity;
         res.status(200).send('Data received');
-      } else {
-        res.status(400).send('Invalid data type');
-      }
-    } else {
-      res.status(400).send('Invalid data');
-    }
-  });
+    });
   
 app.get('/data', (req, res) => {
   res.json(latestData);
