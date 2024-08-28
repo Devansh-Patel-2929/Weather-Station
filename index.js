@@ -3,12 +3,41 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Middleware to parse JSON bodies
+// Middleware to parse JSON
 app.use(express.json());
+app.use(express.static('public'));
 
-let latestData = {
-  temperature: null,
-  humidity: null
-};
+// Serve the default page
+app.get('/', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Weather Monitoring</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          text-align: center;
+          margin-top: 50px;
+        }
+        button {
+          padding: 10px 20px;
+          font-size: 16px;
+          cursor: pointer;
+        }
+      </style>
+    </head>
+    <body>
+      <h1>Weather Monitoring System</h1>
+      <button onclick="window.location.href='/data'">Get Weather</button>
+    </body>
+    </html>
+  `);
+});
+
+// Route to handle POST requests to update data
 
 app.post('/update', (req, res) => {
     console.log('Request body:', req.body); // Log the incoming data
