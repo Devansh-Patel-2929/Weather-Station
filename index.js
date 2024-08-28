@@ -37,7 +37,10 @@ app.get('/', (req, res) => {
   `);
 });
 
-// Route to handle POST requests to update data
+let latestData = {
+  temperature: null,
+  humidity: null
+};
 
 app.post('/update', (req, res) => {
     console.log('Request body:', req.body); // Log the incoming data
